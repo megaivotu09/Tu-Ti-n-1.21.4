@@ -22,7 +22,9 @@ public class BossBarManager {
     private final Map<UUID, BossBar> playerBossBars = new HashMap<>();
     private final NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
 
-    public BossBarManager(TuTienPlugin plugin) { this.plugin = plugin; }
+    public BossBarManager(TuTienPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     public void createBossBar(Player player) {
         if (playerBossBars.containsKey(player.getUniqueId())) return;
@@ -54,7 +56,7 @@ public class BossBarManager {
         }
 
         if (plugin.getTribulationManager().isInTribulation(player)) {
-            AttributeInstance maxHealthAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            AttributeInstance maxHealthAttribute = player.getAttribute(getAttributeSafely("GENERIC_MAX_HEALTH"));
             double maxHealth = (maxHealthAttribute != null) ? maxHealthAttribute.getValue() : 20.0;
             bossBar.setTitle("§4§lĐANG ĐỘ KIẾP - CHỐNG CỰ LÔI KIẾP!");
             bossBar.setColor(BarColor.RED);
@@ -68,14 +70,14 @@ public class BossBarManager {
             bossBar.setProgress(1.0);
             return;
         }
-        
+
         updateNormalBossBar(bossBar, data);
     }
-    
+
     private void updateNormalBossBar(BossBar bossBar, PlayerData data) {
         TuLuyenInfo info = data.getTuLuyenInfo();
         long linhKhiCan = info.getLinhKhiCanThiet();
-        
+
         if (bossBar.getColor() != BarColor.GREEN) bossBar.setColor(BarColor.GREEN);
 
         if (linhKhiCan == Long.MAX_VALUE) {
@@ -90,7 +92,8 @@ public class BossBarManager {
         progress = Math.max(0.0, Math.min(1.0, progress));
 
         bossBar.setProgress(progress);
-        bossBar.setTitle(String.format("§aLinh Khí: §f%s §7/ §c%s", formatNumber(linhKhiHienTai), formatNumber(linhKhiCan)));
+        bossBar.setTitle(String.format("§aLinh Khí: §f%s §7/ §c%s",
+                formatNumber(linhKhiHienTai), formatNumber(linhKhiCan)));
     }
 
     private void updateSoulBossBar(BossBar bossBar, Player player) {
@@ -105,5 +108,14 @@ public class BossBarManager {
 
     private String formatNumber(long number) {
         return numberFormat.format(number);
+    }
+
+    private Attribute getAttributeSafely(String name) {
+        try {
+            return Attribute.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().warning("Không tìm thấy attribute: " + name);
+            return null;
+        }
     }
 }

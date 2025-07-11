@@ -17,3 +17,7 @@ commands:
   dotpha:
     description: Bắt đầu quá trình đột phá đại cảnh giới khi đã đủ điều kiện.
     usage: /<command>
+  setlinhkhi: # <-- THÊM KHỐI LỆNH MỚI
+    description: (Admin) Đặt một lượng linh khí cụ thể cho bản thân.
+    usage: /<command> <số_lượng>
+    permission: tutien.admin # Chỉ người có quyền này mới dùng được

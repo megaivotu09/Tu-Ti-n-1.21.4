@@ -23,6 +23,8 @@ public class AttributeManager {
         double maxHealth = statManager.getMaxHealth();
         double defense = statManager.getDefense();
         
+        // --- SỬA LỖI TẠI ĐÂY ---
+        // Tên đúng là: Attribute.GENERIC_MAX_HEALTH và Attribute.GENERIC_ARMOR
         AttributeInstance healthAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (healthAttribute != null) {
             healthAttribute.getModifiers().stream()

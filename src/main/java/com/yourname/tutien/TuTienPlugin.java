@@ -25,6 +25,8 @@ public final class TuTienPlugin extends JavaPlugin {
     private MeditationManager meditationManager;
     private TribulationManager tribulationManager;
     private RemnantSoulManager remnantSoulManager;
+    private ScoreboardManager scoreboardManager; // Thêm biến này
+    private BossBarManager bossBarManager; // Thêm biến này
 
     @Override
     public void onEnable() {
@@ -39,10 +41,14 @@ public final class TuTienPlugin extends JavaPlugin {
         this.meditationManager = new MeditationManager(this);
         this.tribulationManager = new TribulationManager(this);
         this.remnantSoulManager = new RemnantSoulManager(this);
+        this.scoreboardManager = new ScoreboardManager(this); // Khởi tạo
+        this.bossBarManager = new BossBarManager(this); // Khởi tạo
 
         getCommand("tutien").setExecutor(new TuTienCommand(this));
         getCommand("tuluyen").setExecutor(new TuLuyenCommand(this));
         getCommand("dotpha").setExecutor(new DotPhaCommand(this));
+        getCommand("setlinhkhi").setExecutor(new SetLinhKhiCommand(this));
+
 
         getServer().getPluginManager().registerEvents(new PlayerConnectionListener(this), this);
         getServer().getPluginManager().registerEvents(new MobKillListener(this), this);
@@ -78,6 +84,7 @@ public final class TuTienPlugin extends JavaPlugin {
         getLogger().info("§cPlugin TuTienPlugin da duoc tat!");
     }
 
+    // --- CÁC HÀM GETTER ĐÃ ĐƯỢC THÊM ĐẦY ĐỦ ---
     public static TuTienPlugin getInstance() { return instance; }
     public StorageManager getStorageManager() { return storageManager; }
     public PlayerDataManager getPlayerDataManager() { return playerDataManager; }
@@ -87,4 +94,6 @@ public final class TuTienPlugin extends JavaPlugin {
     public MeditationManager getMeditationManager() { return meditationManager; }
     public TribulationManager getTribulationManager() { return tribulationManager; }
     public RemnantSoulManager getRemnantSoulManager() { return remnantSoulManager; }
+    public ScoreboardManager getScoreboardManager() { return scoreboardManager; }
+    public BossBarManager getBossBarManager() { return bossBarManager; }
 }

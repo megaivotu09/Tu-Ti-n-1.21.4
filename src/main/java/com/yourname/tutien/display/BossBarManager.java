@@ -6,11 +6,11 @@ import com.yourname.tutien.player.PlayerData;
 import com.yourname.tutien.player.TuLuyenInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
-
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Locale;
@@ -58,7 +58,7 @@ public class BossBarManager {
             double maxHealth = (maxHealthAttribute != null) ? maxHealthAttribute.getValue() : 20.0;
             bossBar.setTitle("§4§lĐANG ĐỘ KIẾP - CHỐNG CỰ LÔI KIẾP!");
             bossBar.setColor(BarColor.RED);
-            bossBar.setProgress(player.getHealth() / maxHealth); // SỬA LỖI TẠI ĐÂY
+            bossBar.setProgress(player.getHealth() / maxHealth);
             return;
         }
 

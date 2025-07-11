@@ -22,8 +22,7 @@ public class AttributeManager {
         StatManager statManager = new StatManager(data.getTuLuyenInfo());
         double maxHealth = statManager.getMaxHealth();
         double defense = statManager.getDefense();
-        
-        // --- SỬA LỖI TẠI ĐÂY ---
+
         // Tên đúng là: Attribute.GENERIC_MAX_HEALTH và Attribute.GENERIC_ARMOR
         AttributeInstance healthAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (healthAttribute != null) {
@@ -34,13 +33,13 @@ public class AttributeManager {
             AttributeModifier healthModifier = new AttributeModifier(HEALTH_MODIFIER_UUID, "tutien_health", maxHealth - 20, AttributeModifier.Operation.ADD_NUMBER);
             healthAttribute.addModifier(healthModifier);
         }
-        
+
         AttributeInstance defenseAttribute = player.getAttribute(Attribute.GENERIC_ARMOR);
         if (defenseAttribute != null) {
             defenseAttribute.getModifiers().stream()
                     .filter(m -> m.getUniqueId().equals(DEFENSE_MODIFIER_UUID))
                     .forEach(defenseAttribute::removeModifier);
-            
+
             AttributeModifier defenseModifier = new AttributeModifier(DEFENSE_MODIFIER_UUID, "tutien_defense", defense, AttributeModifier.Operation.ADD_NUMBER);
             defenseAttribute.addModifier(defenseModifier);
         }

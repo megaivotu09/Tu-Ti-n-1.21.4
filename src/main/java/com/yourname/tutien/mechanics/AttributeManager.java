@@ -6,6 +6,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
+
 import java.util.UUID;
 
 public class AttributeManager {
@@ -13,7 +14,9 @@ public class AttributeManager {
     private static final UUID HEALTH_MODIFIER_UUID = UUID.fromString("a8a3a3e6-71d5-45a2-8447-5d5a6a35368a");
     private static final UUID DEFENSE_MODIFIER_UUID = UUID.fromString("b8b3b3e6-71d5-45a2-8447-5d5a6b35368b");
 
-    public AttributeManager(TuTienPlugin plugin) { this.plugin = plugin; }
+    public AttributeManager(TuTienPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     public void updatePlayerAttributes(Player player) {
         PlayerData data = plugin.getPlayerDataManager().getPlayerData(player);
@@ -23,25 +26,37 @@ public class AttributeManager {
         double maxHealth = statManager.getMaxHealth();
         double defense = statManager.getDefense();
 
-        // Tên đúng là: Attribute.GENERIC_MAX_HEALTH và Attribute.GENERIC_ARMOR
-        AttributeInstance healthAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        AttributeInstance healthAttribute = player.getAttribute(getAttributeSafely("GENERIC_MAX_HEALTH"));
         if (healthAttribute != null) {
             healthAttribute.getModifiers().stream()
                     .filter(m -> m.getUniqueId().equals(HEALTH_MODIFIER_UUID))
                     .forEach(healthAttribute::removeModifier);
 
-            AttributeModifier healthModifier = new AttributeModifier(HEALTH_MODIFIER_UUID, "tutien_health", maxHealth - 20, AttributeModifier.Operation.ADD_NUMBER);
+            AttributeModifier healthModifier = new AttributeModifier(
+                    HEALTH_MODIFIER_UUID, "tutien_health", maxHealth - 20,
+                    AttributeModifier.Operation.ADD_NUMBER);
             healthAttribute.addModifier(healthModifier);
         }
 
-        AttributeInstance defenseAttribute = player.getAttribute(Attribute.GENERIC_ARMOR);
+        AttributeInstance defenseAttribute = player.getAttribute(getAttributeSafely("GENERIC_ARMOR"));
         if (defenseAttribute != null) {
             defenseAttribute.getModifiers().stream()
                     .filter(m -> m.getUniqueId().equals(DEFENSE_MODIFIER_UUID))
                     .forEach(defenseAttribute::removeModifier);
 
-            AttributeModifier defenseModifier = new AttributeModifier(DEFENSE_MODIFIER_UUID, "tutien_defense", defense, AttributeModifier.Operation.ADD_NUMBER);
+            AttributeModifier defenseModifier = new AttributeModifier(
+                    DEFENSE_MODIFIER_UUID, "tutien_defense", defense,
+                    AttributeModifier.Operation.ADD_NUMBER);
             defenseAttribute.addModifier(defenseModifier);
+        }
+    }
+
+    private Attribute getAttributeSafely(String name) {
+        try {
+            return Attribute.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().warning("Không tìm thấy attribute: " + name);
+            return null;
         }
     }
 }

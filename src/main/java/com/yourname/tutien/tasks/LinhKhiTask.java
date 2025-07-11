@@ -24,6 +24,8 @@ public class LinhKhiTask extends BukkitRunnable {
                 }
                 if (finalAmount > 0) {
                     data.addLinhKhi((long) finalAmount);
+                    // Tự động kiểm tra và thực hiện tiểu đột phá
+                    data.performBreakthrough();
                 }
             }
         }

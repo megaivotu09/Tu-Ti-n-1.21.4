@@ -54,9 +54,11 @@ public class BossBarManager {
         }
 
         if (plugin.getTribulationManager().isInTribulation(player)) {
+            AttributeInstance maxHealthAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            double maxHealth = (maxHealthAttribute != null) ? maxHealthAttribute.getValue() : 20.0;
             bossBar.setTitle("§4§lĐANG ĐỘ KIẾP - CHỐNG CỰ LÔI KIẾP!");
             bossBar.setColor(BarColor.RED);
-            bossBar.setProgress(player.getHealth() / player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+            bossBar.setProgress(player.getHealth() / maxHealth); // SỬA LỖI TẠI ĐÂY
             return;
         }
 

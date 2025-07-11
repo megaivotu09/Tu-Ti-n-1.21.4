@@ -32,6 +32,7 @@ public class PlayerData {
     }
 
     public boolean canBreakthrough() {
+        if (this.tuLuyenInfo.getTang() == 9) return true; // Đại cảnh giới luôn có thể thử độ kiếp
         return linhKhi >= tuLuyenInfo.getLinhKhiCanThiet();
     }
     
@@ -41,8 +42,26 @@ public class PlayerData {
     }
     
     public void performBreakthrough() {
-        if (!canBreakthrough()) return;
-        this.linhKhi -= tuLuyenInfo.getLinhKhiCanThiet();
+        // Tiểu đột phá không cần lệnh, tự động diễn ra
+        while (this.linhKhi >= tuLuyenInfo.getLinhKhiCanThiet() && this.tuLuyenInfo.getTang() < 9) {
+            long linhKhiCanThiet = tuLuyenInfo.getLinhKhiCanThiet();
+            this.linhKhi -= linhKhiCanThiet;
+            tuLuyenInfo.dotPha();
+            
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                player.sendMessage("§b[Tiểu Đột Phá] §fLinh khí ngưng tụ, đạo hữu đã đột phá lên §e" + tuLuyenInfo.getTenHienThiDayDu());
+                TuTienPlugin.getInstance().getAttributeManager().updatePlayerAttributes(player);
+                TuTienPlugin.getInstance().getFlightManager().updatePlayerFlight(player);
+            }
+        }
+    }
+    
+    public void performGrandBreakthrough() {
+        if (this.tuLuyenInfo.getTang() != 9) return;
+        
+        long linhKhiCanThiet = tuLuyenInfo.getLinhKhiCanThiet();
+        this.linhKhi -= linhKhiCanThiet;
         tuLuyenInfo.dotPha();
         Player player = Bukkit.getPlayer(uuid);
         if (player != null) {

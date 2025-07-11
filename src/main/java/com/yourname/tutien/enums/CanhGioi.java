@@ -3,6 +3,7 @@ package com.yourname.tutien.enums;
 import org.bukkit.ChatColor;
 
 public enum CanhGioi {
+    // Tên Enum(Tên hiển thị, ID, Linh khí cần để lên Tầng 1 của cảnh giới này)
     PHAM_NHAN("§7Phàm Nhân", 0, 1000),
     LUYEN_KHI("§fLuyện Khí Kỳ", 1, 1000),
     TRUC_CO("§aTrúc Cơ Kỳ", 2, 50000),
